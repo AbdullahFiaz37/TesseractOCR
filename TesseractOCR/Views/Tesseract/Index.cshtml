@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Tesseract OCR Demo";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form id="ocr-form" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" id="file-input" /><br />
+    <img id="preview-image" src="#" alt="Preview Image" style="display: none;" width="500"/><br />
+    <button type="submit">Submit</button>
+</form>
+
+@if (!string.IsNullOrEmpty(ViewBag.ImageBase64))
+{
+    <h2>Image:</h2>
+    <img src="data:image/png;base64,@ViewBag.ImageBase64" alt="Image" width="500" />
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Result))
+{
+    <h2>Result:</h2>
+    <p>@ViewBag.Result</p>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Preview selected image
+            $('#file-input').change(function () {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    $('#preview-image').attr('src', reader.result);
+                    $('#preview-image').show();
+                }
+                reader.readAsDataURL(this.files[0]);
+            });
+
+            // Submit form using jQuery
+            //$('#ocr-form').submit(function (e) {
+            //    e.preventDefault();
+            //    var formData = new FormData(this);
+            //    $.ajax({
+            //        url: '@Url.Action("Index", "Tesseract")',
+            //        type: 'POST',
+            //        data: formData,
+            //        cache: false,
+            //        contentType: false,
+            //        processData: false,
+            //        success: function (result) {
+            //            $('#result-section').show();
+            //            $('#result').text(result);
+            //        },
+            //        error: function () {
+            //            alert('Error occurred while processing image.');
+            //        }
+            //    });
+            //});
+        });
+    </script>
+}
